@@ -37,14 +37,14 @@ Inside the `public` directory, create `index.html`:
 ```html
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simple App</title>
-  </head>
-  <body>
+    <title>React App</title>
+</head>
+<body>
     <div id="root"></div>
-  </body>
+</body>
 </html>
 ```
 
@@ -53,7 +53,7 @@ Create a `.babelrc` file in the root directory with the following content:
 
 ```json
 {
-  "presets": ["@babel/preset-env", "@babel/preset-react"]
+  "presets": ["@babel/preset-env","@babel/preset-react"]
 }
 ```
 
@@ -61,41 +61,44 @@ Create a `.babelrc` file in the root directory with the following content:
 Create `webpack.config.js` in the root directory:
 
 ```javascript
-const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const path = require('path');
 
 module.exports = {
-  entry: './src/index.js',
+  entry: './index.js',
+  mode: 'development',
   output: {
-    path: path.resolve(__dirname, 'dist'),
-    filename: 'bundle.js',
+    path: path.resolve(__dirname, './dist'),
+    filename: 'index_bundle.js',
+  },
+  target: 'web',
+  devServer: {
+    port: '5000',
+    host: 'yourhost.domain.com',
+    static: {
+      directory: path.join(__dirname, 'public')
+},
+    open: true,
+    hot: true,
+    liveReload: true,
+  },
+  resolve: {
+    extensions: ['.js', '.jsx', '.json'],
   },
   module: {
     rules: [
       {
-        test: /\.js$/,
-        exclude: /node_modules/,
-        use: {
-          loader: 'babel-loader',
-        },
-      },
-      {
-        test: /\.css$/,
-        use: ['style-loader', 'css-loader'],
+        test: /\.(js|jsx)$/, 
+        exclude: /node_modules/, 
+        use: 'babel-loader', 
       },
     ],
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: './public/index.html',
-    }),
-  ],
-  devServer: {
-    contentBase: path.resolve(__dirname, 'dist'),
-    port: 5000,
-    host: 'yourhost.domain.com',
-    hot: true,
-  },
+      template: path.join(__dirname, 'public', 'index.html')
+    })
+  ]
 };
 ```
 
@@ -103,24 +106,31 @@ module.exports = {
 In the `src` directory, create `App.js`:
 
 ```javascript
-import React from 'react';
+import React from "react";
 
-const App = () => {
-  return <h1>Welcome to Simple App!</h1>;
-};
+const App = () =>{
+    return (
+        <h1>
+            Hello world! I am using React
+        </h1>
+    )
+}
 
-export default App;
+export default App
 ```
 
-And the entry point, `index.js`:
+And in the root directory create the entry point, `index.js`:
 
 ```javascript
-import React from 'react';
-import ReactDOM from 'react-dom';
-import App from './App';
+import React from 'react'
+import  { createRoot }  from 'react-dom/client';
+import App from './src/App.js'
 
-ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+const container = document.getElementById('root');
+const root = createRoot(container);
+root.render(<App/>);
 ```
+
 ### 7. Use these Webpack Scripts Settings:
 Ensure that `package.json` has:
 
@@ -133,11 +143,10 @@ Ensure that `package.json` has:
 ```
 
 ### 8. Run the Development Server:
-Build and run the application:
+Run the application:
 
 ```bash
-npm run build
-npm run start
+npm start
 ```
 
 ## Importance of Webpack
