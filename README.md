@@ -15,7 +15,9 @@ This project demonstrates a basic React setup without using `npx`. It focuses on
 Create the necessary directories and files for the project.
 
 ```bash
-mkdir app public src
+mkdir app
+cd app
+mkdir public src
 ```
 
 ### 2. Install Dependencies:
