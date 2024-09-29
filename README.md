@@ -121,8 +121,18 @@ import App from './App';
 
 ReactDOM.createRoot(document.getElementById('root')).render(<App />);
 ```
+### 7. Use these Webpack Scripts Settings:
+Ensure that `package.json` has:
 
-### 7. Run the Development Server:
+```json
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "webpack-dev-server .",
+    "build": "webpack ."
+  }
+```
+
+### 8. Run the Development Server:
 Build and run the application:
 
 ```bash
